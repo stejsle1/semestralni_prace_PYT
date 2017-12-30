@@ -1,21 +1,31 @@
 WaTor
 =====
 
-WaTor is simulation of sea world with fishs and sharks.
+This is a application with graphical user interface (GUI). This project is about WaTor - WaTor is simulation of sea world with fishs and sharks (p.
 
 
 Install
 -------
 
-To install module run:
+Wator application is install as Python module. Module can be downloaded from GitHub repository ``https:://github.com/stejsle1/semestralni_prace_PYT``. 
+
+After you downloaded it you can install it.
+
+Move to folder with extract files. To install requirements run:
 
 .. code:: Python
 
-   # to install requirements
    python -m pip install -r requirements.txt
-   # to install module
+
+To make a module from file run:
+
+.. code:: Python
+
    python setup.py develop
-  
+ 
+This command will automatically install required modules.
+
+ 
 GUI
 ---
 
@@ -29,9 +39,34 @@ To run GUI type:
 
 
 GUI allow to save and open simulation or create new one - all by clicking on 'File' menu ale picking one of listed buttons.
-Button 'Next chronon' run function `tick()`, button 'Simulation' run function `tick()` 10 times (like real-life simulation).
+Button 'Next chronon' run function `tick()`, button 'Simulation' run function `tick()` in infinite loop (stoppable by button 'Stop' or by extinction one of species). Button 'Optimalized simulation' run same as 'Simulation', but if one of species start to die off application add a few creatures to establish an equilibrium.
 Button 'About' in menu 'Help' print out a window with information about application.
 Button 'Quit' exits the application.
+
+Documentation
+-------------
+
+Documentation is save in ``docs`` folder in module. Before running command to make documentation run command to install all required packages:
+
+.. code:: Python
+
+  python -m pip install -r docs/requirements.txt
+
+To set documentation into HTML format run:
+
+.. code:: Python
+
+  cd docs
+  make html
+
+Now in ``docs/_build/html/`` folder in placed file ``'index.html'`` with documentation.
+
+Documentation also contains tests. Tests can be checked by running command:
+
+.. code:: Python
+
+  make doctest
+
 
 License
 -------
