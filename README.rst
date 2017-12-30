@@ -38,10 +38,10 @@ To run GUI type:
     python -m wator
 
 
-GUI allow to save and open simulation or create new one - all by clicking on 'File' menu ale picking one of listed buttons.
-Button 'Next chronon' run function `tick()`, button 'Simulation' run function `tick()` in infinite loop (stoppable by button 'Stop' or by extinction one of species). Button 'Optimalized simulation' run same as 'Simulation', but if one of species start to die off application add a few creatures to establish an equilibrium.
-Button 'About' in menu 'Help' print out a window with information about application.
-Button 'Quit' exits the application.
+GUI allow to save and open simulation or create new one - all by clicking on ``'File'`` menu and picking one of listed buttons.
+Button ``'Next chronon'`` run function *tick()*, button ``'Simulation'`` run function *tick()* in infinite loop (stoppable by button 'Stop' or by extinction one of species). Button ``'Optimalized simulation'`` run same as ``'Simulation'``, but if one of species start to die off application add a few creatures to establish an equilibrium.
+Button ``'About'`` in menu ``'Help'`` print out a window with information about application.
+Button ``'Quit'`` exits the application.
 
 Documentation
 -------------
