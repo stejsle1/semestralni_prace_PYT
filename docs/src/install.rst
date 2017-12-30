@@ -1,4 +1,6 @@
-Install
+.. _install-label:
+
+INSTALL
 =======
 
 How to install module WaTor

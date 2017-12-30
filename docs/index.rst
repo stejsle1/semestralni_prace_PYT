@@ -10,6 +10,9 @@ Welcome to wator's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-  intro
-  src/install
-
+   intro
+   src/install
+   src/config
+   src/usage
+   src/gui
+   src/test
