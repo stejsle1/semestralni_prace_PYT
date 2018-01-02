@@ -96,3 +96,26 @@ Optimalize function
 -------------------
 
 This function works with function *tick*. After function *tick* makes one chronon, function *optimalize* looks to array of creatures and decide if there is enough creatures to run next chronon. If one of species seems to die off it add some creatures to array to make equilibrium. 
+
+SetAge_fish function
+--------------------
+
+This function sets new age of fish.
+   
+SetAge_shark function
+---------------------
+
+This function sets age of sharks.
+
+SetEnergy_eat function
+----------------------
+
+This function sets amount of energy adding after eating fish.
+
+SetOpti function
+----------------
+
+This function sets amount of creatures adding in optimalize simulation.
+
+
+For more information about API see :ref:`api-label`.
