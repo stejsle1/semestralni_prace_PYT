@@ -8,6 +8,21 @@ import random
 class WaTor():
 
    def __init__(self, creatures = None, numpy.ndarray[numpy.float64_t, ndim=2] energies = None, tuple shape = None, numpy.int64_t nfish = -1, numpy.int64_t nsharks = -1, numpy.int64_t age_fish=5, numpy.int64_t age_shark=10, numpy.int64_t energy_eat=3, numpy.int64_t energy_initial=0): 
+   
+      """
+      Constructor of WaTor
+      
+      :param: ``creatures`` Array of creatures with theirs age
+      :param: ``energies`` Array of energies of sharks
+      :param: ``shape`` Size of array   
+      :param: ``nfish`` Number of fish in array
+      :param: ``nsharks`` Number of sharks in array
+      :param: ``age_fish`` Age of fish to breed
+      :param: ``age_shark`` Age of shark to breed
+      :param: ``energy_eat`` Amount of energy after eating fish
+      :param: ``energy_initial`` Amount of energy at begining
+      :rets: ``self`` Instance
+      """
       
       cdef int ok, size0, size1, a
       
@@ -73,6 +88,14 @@ class WaTor():
          
    
    def tick(self):
+      """
+      Move creatures to next chronon.
+      
+      Move fish by 1 position, move shark by 1 position, decrease energies. Sharks eat fish if they are next to them. Old creatures breed descendant.
+      
+      :rets: ``self`` Instance
+      """
+      
       cdef int size0, size1, value, ways, i, j, a
       
       energies = self.energies
@@ -251,29 +274,76 @@ class WaTor():
        
                   
    def count_fish(self):
+      """
+      Return actual amount of fish in array.
+      
+      :rets: ``int`` Number of fish in array.
+      """
+      
       cdef int result
       boolarr = self.creatures > 0
       return numpy.sum(boolarr, dtype='int64')
    
-   def count_sharks(self):
+   def count_sharks(self):  
+      """
+      Return actual amount of sharks in array.
+      
+      :rets: ``int`` Number of sharks in array.
+      """
+      
       cdef int result
       boolarr = self.creatures < 0
       return numpy.sum(boolarr, dtype='int64')
 
    def setAge_fish(self, age):
+      """
+      Set age of fish to breed.
+      
+      :param: ``age`` Age of fish.
+      :rets: ``None``
+      """
+      
       self.age_fish = age
    
-   def setAge_shark(self, age):
+   def setAge_shark(self, age): 
+      """
+      Set age of shark to breed.
+      
+      :param: ``age`` Age of shark.
+      :rets: ``None``
+      """
+      
       self.age_shark = age
 
-   def setEnergy_eat(self, eat):
+   def setEnergy_eat(self, eat): 
+      """
+      Set amount of energy which shark gains after eating fish.
+      
+      :param: ``eat`` Amount of energy.
+      :rets: ``None``
+      """
+      
       self.eat = eat
 
    def setOpti(self, sum, opti_perc):
+      """
+      Set amount of creatures to add for optimalize simulation.
+      
+      :param: ``sum`` Amount of creatures in array.
+      :param: ``opti_perc`` Percentage of creatures to add.
+      :rets: ``None``
+      """
+      
       self.opti = numpy.floor(sum*opti_perc/100) + 1
 
 
    def optimalize(self):
+      """
+      Makes equilibrium between species by adding creatures to array if they start to die off.
+      
+      :rets: ``None``
+      """
+   
       if self.count_fish() <= self.opti:
          # Add fish
          size0 = self.creatures.shape[0]

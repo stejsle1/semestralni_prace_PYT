@@ -8,9 +8,9 @@ Configuration can be set only by managging array of creatures. This can be set b
 Simulation configuration
 ------------------------
 
-On right side of window there are 4 fields and 1 slider to set variables for simulation.
+On right side of window there are 3 fields and 1 slider to set variables for simulation.
 
-User can set *age_fish*, *age_shark*, *energy_initial* and *energy_eat* (more information in :ref:`use-manual` or :ref:`api-label`). Last settings variable is *optimalize percentage* - it set amount of creatures, which will be add in optimalize simulation.
+User can set *age_fish*, *age_shark* and *energy_eat* (more information in :ref:`use-manual` or :ref:`api-label`). Last settings variable is *optimalize percentage* - it set amount of creatures, which will be add in optimalize simulation.
 
 This settings can be change while simulation running on.
 
