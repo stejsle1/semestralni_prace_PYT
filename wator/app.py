@@ -17,19 +17,31 @@ SVG_SHARK = QtSvg.QSvgRenderer('wator/gui/shark.svg')
 VALUE_ROLE = QtCore.Qt.UserRole
 
 def pixels_to_logical(x, y):
-    """Convert pixels from grid to logical rows and columns to numpy"""
+    """
+    Convert pixels from grid to logical rows and columns to numpy.
+    
+    :param: ``x`` Number of pixels in x axis.
+    :param: ``y`` Number of pixels in y axis.
+    :return: ``x, y`` Logical rows and columns.
+    """
     return y // CELL_SIZE, x // CELL_SIZE
 
 
 def logical_to_pixels(row, column):
-    """Convert logical rows and columns from numpy to pixels to display"""
+    """
+    Convert logical rows and columns from numpy to pixels to display.
+    
+    :param: ``row`` Number of rows.
+    :param: ``cols`` Number of columns.
+    :return: ``cols, rows`` Pixels to display.
+    """
     return column * CELL_SIZE, row * CELL_SIZE
 
 
 def main():
-    """Main function
+    """Main function.
 
-       run GUI app
+       Run GUI app.
     """
     app = QtWidgets.QApplication([])
 
@@ -41,12 +53,20 @@ def main():
     # Wator instance = grid; - random creatures setting
     wator = WaTor(shape=(15, 20), nfish=10, nsharks=10)
 
+
     # Get scrollArea from Qt Designeru
     scroll_area = window.findChild(QtWidgets.QScrollArea, 'scrollArea')
-
     # Put grid in it
     grid = GridWidget(wator.creatures, wator.energies)
     scroll_area.setWidget(grid)
+    
+    
+     # Get graph from Qt Designeru
+    graph_area = window.findChild(QtWidgets.QScrollArea, 'graphArea')
+    # Put grid in it
+    grid2 = QtWidgets.QWidget()
+    graph_area.setWidget(grid2)
+
 
     # Get palette from Qt Designeru
     palette = window.findChild(QtWidgets.QListWidget, 'palette')
@@ -60,7 +80,11 @@ def main():
 
 
     def item_activated():
-        """This function is called when user pick an item"""
+        """
+        This function is called when user pick an item
+        
+        :return: ``None``
+        """
 
         for item in palette.selectedItems():
             grid.selected = item.data(VALUE_ROLE)
@@ -93,8 +117,7 @@ def main():
 
     init = window.findChild(QtWidgets.QSpinBox, 'energy_initialBox').value()
     grid.initEnergy = init
-
-
+    
     window.show()
 
     return app.exec()

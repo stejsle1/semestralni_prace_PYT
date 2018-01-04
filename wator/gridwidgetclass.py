@@ -15,49 +15,81 @@ VALUE_ROLE = QtCore.Qt.UserRole
 
 
 def pixel_to_logical(x, y):
+    """
+    Convert pixels from grid to logical rows and columns to numpy
+    
+    :param: ``x`` Number of pixels in x axis.
+    :param: ``y`` Number of pixels in y axis.
+    :return: ``x, y`` Logical rows and columns.
+    """
     return y // CELL_SIZE, x // CELL_SIZE
 
 
-def logical_to_pixel(row, column):
+def logical_to_pixel(row, column): 
+    """
+    Convert logical rows and columns from numpy to pixels to display
+    
+    :param: ``row`` Number of rows.
+    :param: ``cols`` Number of columns.
+    :return: ``cols, rows`` Pixels to display.
+    """
     return column * CELL_SIZE, row * CELL_SIZE
 
 
 
 class GridWidget(QtWidgets.QWidget):
     def __init__(self, array, energy):
-        super().__init__()  # musime zavolat konstruktor predka
+        """
+        Init GridWinget instance
+        
+        :param: ``array`` Array of creatures.
+        :param: ``energy`` Array of energies.
+        :return: ``None``
+        """
+        super().__init__()  # call constructor of ascensor
         self.array = array
         self.energy = energy
         self.stop = False
         self.opti = 1
 
-        # nastavime velikost podle velikosti matice, jinak je nas widget prilis maly
+        # set size according array size
         size = logical_to_pixel(*array.shape)
         self.setMinimumSize(*size)
         self.setMaximumSize(*size)
         self.resize(*size)
 
     def mousePressEvent(self, event):
-        # prevedeme klik na souradnice matice
+        """
+        Update arrays of creatures and energies after adding new creatures or water into main matrix.
+        
+        :param: ``event`` Clicked place.
+        :return: ``None``
+        """
+        # convert click to logical cols and rows
         row, column = pixel_to_logical(event.x(), event.y())
 
-        # Pokud jsme v matici, aktualizujeme data
+        # if in array, update 
         if 0 <= row < self.array.shape[0] and 0 <= column < self.array.shape[1]:
             self.array[row, column] = self.selected
             if self.selected < 0:
                self.energy[row, column] = self.initEnergy
 
-            # timto zajistime prekresleni widgetu v miste zmeny:
-            # (pro Python 3.4 a nizsi volejte jen self.update() bez argumentu)
+            # this ensure to rewrite widget:
+            # (for Python 3.4 and below call self.update() without arguments)
             self.update(*logical_to_pixel(row, column), CELL_SIZE, CELL_SIZE)
 
-    # vzdycky, kdyz je treba neco prekreslit, kdyz je treba, reaguje na udalost
-    # metoda, protoze nejde pouzit v connect(slot)
-    def paintEvent(self, event):
-        rect = event.rect()  # ziskame informace o prekreslovane oblasti
+    # when need to rewrite, react to event
+    # method, because cant use in connect()
+    def paintEvent(self, event): 
+        """
+        Rewrite updating place - fill place with picture.
+        
+        :param: ``event`` Clicked place.
+        :return: ``None``
+        """
+        rect = event.rect()  # get info about rewriting place
 
-        # zjistime, jakou oblast nasi matice to predstavuje
-        # nesmime se pritom dostat z matice ven
+        # get logical position
         row_min, col_min = pixel_to_logical(rect.left(), rect.top())
         row_min = max(row_min, 0)
         col_min = max(col_min, 0)
@@ -65,36 +97,27 @@ class GridWidget(QtWidgets.QWidget):
         row_max = min(row_max + 1, self.array.shape[0])
         col_max = min(col_max + 1, self.array.shape[1])
 
-        painter = QtGui.QPainter(self)  # budeme kreslit
+        painter = QtGui.QPainter(self)  # set a painter
 
         for row in range(row_min, row_max):
             for column in range(col_min, col_max):
-                # ziskame ctverecek, ktery budeme vybarvovat
+                # get pixels to rewrite (repaint)
                 x, y = logical_to_pixel(row, column)
                 rect = QtCore.QRectF(x, y, CELL_SIZE, CELL_SIZE)
 
-                #BARVY
-                # seda pro zdi, zelena pro travu
-                #if self.array[row, column] < 0:
-                #    color = QtGui.QColor(115, 115, 115)
-                #else:
-                #    color = QtGui.QColor(0, 255, 0)
-
-                # OBRAZKY
-                # podkladova barva pod polopruhledne obrazky
+                # pictures
+                # underlying color under semi-transparent images
                 white = QtGui.QColor(255, 255, 255)
                 painter.fillRect(rect, QtGui.QBrush(white))
 
-                # travu dame vsude, protoze i zdi stoji na trave
+                # water everywhere
                 SVG_WATER.render(painter, rect)
 
-                # zdi dame jen tam, kam patri
+                # fish and shark pictures to place, where they has to be
                 if self.array[row, column] > 0:
                     SVG_FISH.render(painter, rect)
                 if self.array[row, column] < 0:
                     SVG_SHARK.render(painter, rect)
 
-                # vyplnime ctverecek barvou
-                #painter.fillRect(rect, QtGui.QBrush(color))
 
 

@@ -4,9 +4,16 @@ import time
 import os.path
 from wator import WaTor
 from .gridwidgetclass import GridWidget
+from .matplot import print_plot
 
 def next_chronon(window, grid):
-    """Turn simulation into next chronon, make 1 tick"""
+    """
+    Turn simulation into next chronon, run 1 tick function.
+    
+    :param: ``window`` Main window of application.
+    :param: ``grid`` Layout of window.
+    :return: ``None`` 
+    """
     wator = WaTor(creatures=grid.array, energies=grid.energy)
 
     age_fish = window.findChild(QtWidgets.QSpinBox, 'age_fishBox').value()
@@ -28,10 +35,20 @@ def next_chronon(window, grid):
 
 
 def simulation_loop(window, grid, app):
-    """Run simulation of tick in loop
+    """Run simulation of tick in loop.
 
-    Can be stopped by button Stop or by case that every creatures die off."""
-
+    Can be stopped by button Stop or by case that every creatures die off.
+    
+    :param: ``window`` Main window of application.
+    :param: ``grid`` Layout of window.
+    :param: ``app`` Application.
+    :return: ``None`` 
+    """
+     
+    # Delete only content of file - data of previous simulation
+    with open('wator/gui/simulations/logmatplot.txt', "w"):
+        pass
+        
     wator = WaTor(creatures=grid.array, energies=grid.energy)
 
     # User options are set in begining, not while simulating
@@ -77,9 +94,18 @@ def simulation_opti(window, grid, app):
 
     Number of added creatures is sum of creatures in init state multiply by percentage set by user.
 
-    Simulation can be stopped only by button Stop
+    Simulation can be stopped only by button Stop.
+    
+    :param: ``window`` Main window of application.
+    :param: ``grid`` Layout of window.
+    :param: ``app`` Application.
+    :return: ``None`` 
     """
-
+    
+    # Delete only content of file - data of previous simulation
+    with open('wator/gui/simulations/logmatplot.txt', "w"):
+        pass
+        
     wator = WaTor(creatures=grid.array, energies=grid.energy)
     sum = wator.count_fish() + wator.count_sharks()
 
@@ -107,11 +133,19 @@ def simulation_opti(window, grid, app):
        wator.setEnergy_eat(eat)
        wator.setOpti(sum, opti)
        print(wator.opti)
+       
        # Optimalize actual wator instance
-       wator.optimalize()
+       limit_fish, limit_shark = wator.optimalize()
 
        # Turn to next chronon
        wator.tick()
+       
+       # Print data into file
+       log_for_matplot(wator.count_fish(), wator.count_sharks(), limit_fish, limit_shark)
+       
+       # Print graph from data
+       print_plot()
+    
        grid.array = wator.creatures
        grid.energy = wator.energies
 
@@ -122,9 +156,19 @@ def simulation_opti(window, grid, app):
     grid.stop = False
 
 
-def log_for_matplot(wator):
+def log_for_matplot(nfish, nsharks, addfish, addsharks):
+     """
+     Save amount of creatures to file - log.
+    
+     :param: ``nfish`` Actual number of fish. 
+     :param: ``nsharks`` Actual number of sharks. 
+     :param: ``addfish`` Number of added fish.  
+     :param: ``addsharks`` Number of added shark. 
+     """
 
-    fish = wator.count_fish()
-    shark = wator.count_sharks()
-
-    # Send to matplot
+     # Send to matplot
+     with open('wator/gui/simulations/logmatplot.txt', 'r+') as f:
+         buffer1 = deque(f, maxlen=30)
+     buffer1.append(str(nfish) + " " + str(nsharks) + " " + str(addfish) + " " + str(addsharks) + "\n")
+     with open('wator/gui/simulations/logmatplot.txt', 'w+') as f:
+         f.writelines(buffer1)

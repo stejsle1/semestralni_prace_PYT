@@ -9,17 +9,38 @@ CELL_SIZE = 32
 
 
 def pixel_to_logical(x, y):
-    """Convert pixels from grid to logical rows and columns to numpy"""
+    """
+    Convert pixels from grid to logical rows and columns to numpy
+    
+    :param: ``x`` Number of pixels in x axis.
+    :param: ``y`` Number of pixels in y axis.
+    :return: ``x, y`` Logical rows and columns.
+    """
     return y // CELL_SIZE, x // CELL_SIZE
 
 
 def logical_to_pixel(row, column):
-    """Convert logical rows and columns from numpy to pixels to display"""
+    """
+    Convert logical rows and columns from numpy to pixels to display
+    
+    :param: ``row`` Number of rows.
+    :param: ``cols`` Number of columns.
+    :return: ``cols, rows`` Pixels to display.
+    """
     return column * CELL_SIZE, row * CELL_SIZE
 
 
 
 def new_dialog(window, grid):
+    """
+    Open dialog for creating new simulation array.
+    
+    User can enter number of cols and rows, number of fish and number of sharks. Function create arrays (creatures and energies) and update a grid.
+    
+    :param: ``window`` Main window of application.
+    :param: ``grid`` Layout of window.
+    :return: ``None`` 
+    """
     # Vytvorime novy dialog.
     # V dokumentaci maji dialogy jako argument `this`;
     # jde o "nadrazene" okno.
@@ -67,7 +88,16 @@ def new_dialog(window, grid):
     grid.update()
 
 
-def save_dialog(window, grid):
+def save_dialog(window, grid):    
+    """
+    Open dialog for saving simulation array.
+    
+    User can enter a path to folder where to save a file with simulation. 
+    
+    :param: ``window`` Main window of application.
+    :param: ``grid`` Layout of window.
+    :return: ``None`` 
+    """
     dialog = QtWidgets.QDialog(window)
 
     #with open('wator/gui/savesimulation.ui') as f:
@@ -94,6 +124,15 @@ def save_dialog(window, grid):
 
 
 def open_dialog(window, grid):
+    """
+    Open dialog for opening simulation array.
+    
+    User can enter a path to filder where simulation is saved and select file to open. Function read file, create arrays (creatures and energies) and update a grid.
+    
+    :param: ``window`` Main window of application.
+    :param: ``grid`` Layout of window.
+    :return: ``None`` 
+    """
     dialog = QtWidgets.QDialog(window)
 
     #with open('wator/gui/opensimulation.ui') as f:
@@ -148,6 +187,13 @@ def open_dialog(window, grid):
 
 
 def print_about(window, grid):
+    """
+    Open window with information about application.
+    
+    :param: ``window`` Main window of application.
+    :param: ``grid`` Layout of window.
+    :return: ``None`` 
+    """
     about = QtWidgets.QMessageBox.about(None, "About WaTor", "<b>WaTor simulation</b><br>Python module with GUI simulating WaTor sea world<br><br>2017<br>Author: Lenka Stejskalova<br><a href=\"https://github.com/stejsle1/wator\">GitHub stejsle1/wator</a><br>Contains <a href=\"https://pypi.python.org/pypi/PyQt5/5.9.1\">PyQt5</a> and graphics from <a href=\"opengameart.org\">OpenGameArt.org</a>")
     return
 

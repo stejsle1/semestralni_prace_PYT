@@ -15,10 +15,10 @@ To use WaTor module just import module to your script:
   
   ...
   
-Wator constructor
+Wator init
 -----------------
 
-To create WaTor instance type:
+To init WaTor instance type:
 
 .. code:: Python 
 
@@ -38,9 +38,9 @@ Every instance need to be created with knowing *size of array and number of crea
   creatures_array[5,5] = -3
   instance = WaTor(creatures=creatures_array) 
   
-*shape* stores size of array, *nfish* set number f fish in array and *nsharks* set number of shark in array. Contructor create array with size of *shape* and randomly place creatures in array. *Positive* number is for **fish**, *negative* number is for **shark**. *Absolute value* of that number is *age of creature*.     
+*shape* stores size of array, *nfish* set number f fish in array and *nsharks* set number of shark in array. Init create array with size of *shape* and randomly place creatures in array. *Positive* number is for **fish**, *negative* number is for **shark**. *Absolute value* of that number is *age of creature*.     
 
-This constructor has additional variables. You can set *array of energies* of sharks:
+This init has additional variables. You can set *array of energies* of sharks:
 
 .. code:: Python
 
@@ -54,7 +54,7 @@ Last additional variables are age_fish, age_shark, energy_eat and energy_initial
 
   instance = WaTor(..., age_fish=5, age_shark=10, energy_eat=3, energy_initial=0)
   
-This constructor set array of creatures or energies and set its constants for further use. Instance then has own global variables which are accessible by typing:
+This init set array of creatures or energies and set its constants for further use. Instance then has own global variables which are accessible by typing:
 
 .. code:: Python
 

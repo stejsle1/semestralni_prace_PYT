@@ -10,7 +10,7 @@ class WaTor():
    def __init__(self, creatures = None, numpy.ndarray[numpy.float64_t, ndim=2] energies = None, tuple shape = None, numpy.int64_t nfish = -1, numpy.int64_t nsharks = -1, numpy.int64_t age_fish=5, numpy.int64_t age_shark=10, numpy.int64_t energy_eat=3, numpy.int64_t energy_initial=0): 
    
       """
-      Constructor of WaTor
+      Init WaTor instance
       
       :param: ``creatures`` Array of creatures with theirs age
       :param: ``energies`` Array of energies of sharks
@@ -73,7 +73,7 @@ class WaTor():
             raise ValueError("Mnoho parametru")   
       else:
          if energy_initial == 0:
-            energy_initial = 5
+            energy_initial = 3
          energies = numpy.zeros((creatures.shape[0], creatures.shape[1]))  
          for i in range(0, creatures.shape[0]):
             for j in range(0, creatures.shape[1]):
@@ -84,7 +84,8 @@ class WaTor():
       self.creatures = creatures
       self.age_fish = age_fish
       self.age_shark = age_shark
-      self.eat = energy_eat           
+      self.eat = energy_eat 
+      self.initEnergy = energy_initial           
          
    
    def tick(self):
@@ -101,7 +102,6 @@ class WaTor():
       energies = self.energies
       creatures = self.creatures
       
-      energies = energies - 1
       creatures2 = creatures.copy()
       value = 0
       
@@ -261,12 +261,13 @@ class WaTor():
       energies = energies2.copy() 
       
       # Shark energy out 
+      energies = energies - 1
+      
       with cython.boundscheck(False):              
        for i in range(0, creatures.shape[0]):
          for j in range(0, creatures.shape[1]):
             if creatures[i,j] < 0 and energies[i,j] == 0:
-               creatures[i,j] = 0
-               print("OK")               
+               creatures[i,j] = 0            
       self.creatures = creatures
       self.energies = energies
       
@@ -341,7 +342,7 @@ class WaTor():
       """
       Makes equilibrium between species by adding creatures to array if they start to die off.
       
-      :rets: ``None``
+      :rets: ``limit_fish, limit_shark`` Amount of added creatures.
       """
    
       if self.count_fish() <= self.opti:
@@ -361,7 +362,7 @@ class WaTor():
             self.creatures[int(ran[ok]/size1), ran[ok]%size1] = ran_fish[ok]
             ok += 1
 
-         
+      limit_fish = limit   
 
       if self.count_sharks() <= self.opti:
          # Add shark
@@ -380,5 +381,7 @@ class WaTor():
                continue
             self.creatures[int(ran[ok]/size1), ran[ok]%size1] = -1*ran_shark[ok]
             ok += 1
+            
+       return limit_fish, limit     
 
 

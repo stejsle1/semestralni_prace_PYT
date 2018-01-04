@@ -62,3 +62,8 @@ Create array of creatures
 -------------------------
 
 In bottom part of right side there is list of icons. They are symbols of water, fish and shark. To create new array user can choose and click on icon and then add these items to array by clicking on array spaces. To delete creature from array just reclick on space with water icon.
+
+Graph field
+-----------
+
+On upper part of main window
