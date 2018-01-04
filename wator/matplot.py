@@ -1,4 +1,4 @@
-import matplotlib.pyplot
+from matplotlib.figure import Figure
 from wator import WaTor
 
 def print_plot():
@@ -16,7 +16,7 @@ def print_plot():
     b = [line.split()[3] for line in lines]
 
 
-    fig = pyplot.figure()
+    fig = Figure()
 
     ax1 = fig.add_subplot(111)
     

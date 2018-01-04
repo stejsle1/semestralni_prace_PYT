@@ -62,10 +62,10 @@ def main():
     
     
      # Get graph from Qt Designeru
-    graph_area = window.findChild(QtWidgets.QScrollArea, 'graphArea')
+    graph_area = window.findChild(QtWidgets.QWidget, 'plotArea')
     # Put grid in it
-    grid2 = QtWidgets.QWidget()
-    graph_area.setWidget(grid2)
+    #grid2 = QtWidgets.QWidget()
+    #graph_area.setWidget(grid2)
 
 
     # Get palette from Qt Designeru

@@ -345,6 +345,8 @@ class WaTor():
       :rets: ``limit_fish, limit_shark`` Amount of added creatures.
       """
    
+      limit = 0
+
       if self.count_fish() <= self.opti:
          # Add fish
          size0 = self.creatures.shape[0]
@@ -353,7 +355,7 @@ class WaTor():
          ran = numpy.random.random_integers(0, size0*size1-1, limit)
          ran_fish = numpy.random.randint(low=1, high=self.age_fish+1, size=limit)
          ok = 0
-         print(limit)
+
          while ok < limit:
             if self.creatures[int(ran[ok]/size1), ran[ok]%size1] != 0:
                ran[ok] += 1
@@ -374,7 +376,6 @@ class WaTor():
          ok = 0
 
          while ok < limit:
-
             if self.creatures[int(ran[ok]/size1), ran[ok]%size1] != 0:
                ran[ok] += 1
                ran[ok] %= size0*size1
@@ -382,6 +383,6 @@ class WaTor():
             self.creatures[int(ran[ok]/size1), ran[ok]%size1] = -1*ran_shark[ok]
             ok += 1
             
-       return limit_fish, limit     
+      return limit_fish, limit     
 
 
