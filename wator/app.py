@@ -6,6 +6,7 @@ from wator import WaTor
 from .windows import new_dialog, save_dialog, open_dialog, print_about
 from .simulations import next_chronon, simulation_loop, simulation_opti
 from .gridwidgetclass import GridWidget
+from .matplot import MyMplCanvas
 
 
 CELL_SIZE = 32
@@ -43,9 +44,10 @@ def main():
 
        Run GUI app.
     """
-    app = QtWidgets.QApplication([])
+    app = QtWidgets.QApplication(['WaTor Simulations'])
 
     window = QtWidgets.QMainWindow()
+    window.setWindowTitle('WaTor Simulations')
 
     with open('wator/gui/mainwindow.ui') as f:
         uic.loadUi(f, window)
@@ -62,10 +64,10 @@ def main():
     
     
      # Get graph from Qt Designeru
-    graph_area = window.findChild(QtWidgets.QWidget, 'plotArea')
+    graph_area = window.findChild(QtWidgets.QHBoxLayout, 'plotLayout')
     # Put grid in it
-    #grid2 = QtWidgets.QWidget()
-    #graph_area.setWidget(grid2)
+    canvas = MyMplCanvas(window, width=5, height=1, dpi=75)
+    graph_area.addWidget(canvas)
 
 
     # Get palette from Qt Designeru
@@ -110,7 +112,7 @@ def main():
     action5.triggered.connect(lambda: simulation_loop(window, grid, app))
 
     action6 = window.findChild(QtWidgets.QAction, 'actionOpti_sim')
-    action6.triggered.connect(lambda: simulation_opti(window, grid, app))
+    action6.triggered.connect(lambda: simulation_opti(window, grid, app, canvas))
 
     action7 = window.findChild(QtWidgets.QAction, 'actionAbout')
     action7.triggered.connect(lambda: print_about(window, grid))

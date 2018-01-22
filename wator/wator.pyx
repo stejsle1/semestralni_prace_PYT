@@ -104,6 +104,8 @@ class WaTor():
       
       creatures2 = creatures.copy()
       value = 0
+
+      energies = energies - 1
       
       size0 = creatures.shape[0]
       size1 = creatures.shape[1]
@@ -261,7 +263,6 @@ class WaTor():
       energies = energies2.copy() 
       
       # Shark energy out 
-      energies = energies - 1
       
       with cython.boundscheck(False):              
        for i in range(0, creatures.shape[0]):
@@ -364,7 +365,8 @@ class WaTor():
             self.creatures[int(ran[ok]/size1), ran[ok]%size1] = ran_fish[ok]
             ok += 1
 
-      limit_fish = limit   
+      limit_fish = limit 
+      limit = 0  
 
       if self.count_sharks() <= self.opti:
          # Add shark

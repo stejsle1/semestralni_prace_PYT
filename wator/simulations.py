@@ -4,7 +4,7 @@ import time
 import os.path
 from wator import WaTor
 from .gridwidgetclass import GridWidget
-from .matplot import print_plot
+from collections import deque
 
 def next_chronon(window, grid):
     """
@@ -74,20 +74,22 @@ def simulation_loop(window, grid, app):
 
        # Turn to next chronon
        wator.tick()
-       if wator.count_fish() == 0 and wator.count_sharks() == 0:
-          break
 
        grid.array = wator.creatures
        grid.energy = wator.energies
-
        grid.update()
+
        time.sleep(0.5)
+
+       if wator.count_fish() == 0 or wator.count_sharks() == 0:
+          break
+
        app.processEvents()
 
     grid.stop = False
 
 
-def simulation_opti(window, grid, app):
+def simulation_opti(window, grid, app, canvas):
     """Run simulation of tick in loop and in same time control if one of kind of creatures doesn't die.
 
     In case one kind of creatures slowly die off it add some creatures to simulation to make equilibrium.
@@ -132,19 +134,18 @@ def simulation_opti(window, grid, app):
        wator.setAge_shark(age_shark)
        wator.setEnergy_eat(eat)
        wator.setOpti(sum, opti)
-       print(wator.opti)
-       
-       # Optimalize actual wator instance
-       limit_fish, limit_shark = wator.optimalize()
 
        # Turn to next chronon
        wator.tick()
+       
+       # Optimalize actual wator instance
+       limit_fish, limit_shark = wator.optimalize()
        
        # Print data into file
        log_for_matplot(wator.count_fish(), wator.count_sharks(), limit_fish, limit_shark)
        
        # Print graph from data
-       print_plot()
+       canvas.update_figure()
     
        grid.array = wator.creatures
        grid.energy = wator.energies
