@@ -57,6 +57,7 @@ class GridWidget(QtWidgets.QWidget):
         self.setMinimumSize(*size)
         self.setMaximumSize(*size)
         self.resize(*size)
+        self.filepath = "wator/gui/simulations/"
 
     def mousePressEvent(self, event):
         """

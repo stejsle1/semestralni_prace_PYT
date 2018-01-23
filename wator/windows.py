@@ -30,6 +30,34 @@ def logical_to_pixel(row, column):
     return column * CELL_SIZE, row * CELL_SIZE
 
 
+def start_dialog(window, grid):
+    """
+    Open dialog at start of program.
+    
+    :param: ``window`` Main window of application.
+    :param: ``grid`` Layout of window.
+    :return: ``None`` 
+    """
+    dialog = QtWidgets.QDialog(window)
+
+    with open('wator/gui/start.ui') as f:
+        uic.loadUi(f, dialog)
+
+    action1 = dialog.findChild(QtWidgets.QPushButton, 'newButton')
+    action1.clicked.connect(lambda: new_dialog(window, grid))
+
+    action2 = dialog.findChild(QtWidgets.QPushButton, 'openButton')
+    action2.clicked.connect(lambda: open_dialog(window, grid))
+
+    result = dialog.exec()
+
+    if result == QtWidgets.QDialog.Rejected:
+        return
+    if result == QtWidgets.QDialog.Accepted:
+        return
+
+
+
 
 def new_dialog(window, grid):
     """
@@ -41,26 +69,22 @@ def new_dialog(window, grid):
     :param: ``grid`` Layout of window.
     :return: ``None`` 
     """
-    # Vytvorime novy dialog.
-    # V dokumentaci maji dialogy jako argument `this`;
-    # jde o "nadrazene" okno.
+    # Create new dialog over main window
     dialog = QtWidgets.QDialog(window)
 
-    # Nacteme layout z Qt Designeru.
+    # Load layout from Qt Designer.
     with open('wator/gui/newsimulation.ui') as f:
         uic.loadUi(f, dialog)
 
-    # Zobrazime dialog.
-    # Funkce exec zajisti modalitu (tzn. nejde ovladat zbytek aplikace,
-    # dokud je dialog zobrazen) a vrati se az potom, co uzivatel dialog zavre.
+    # Display dialog.
+    # Function exec - what it do?: user can't use rest of application till dialog is open
     result = dialog.exec()
 
-    # Vysledna hodnota odpovida tlacitku/zpusobu, kterym uzivatel dialog zavrel.
+    # Result - if user reject a dialog or not
     if result == QtWidgets.QDialog.Rejected:
-        # Dialog uzivatel zavrel nebo klikl na Cancel.
         return
 
-    # Nacteni hodnot ze SpinBoxu
+    # Load values from SpinBoxs
     cols = dialog.findChild(QtWidgets.QSpinBox, 'colsBox').value()
     rows = dialog.findChild(QtWidgets.QSpinBox, 'rowsBox').value()
     nfish = dialog.findChild(QtWidgets.QSpinBox, 'nfishBox').value()
@@ -73,18 +97,17 @@ def new_dialog(window, grid):
        return
 
     wator = WaTor(shape=(rows, cols), nfish=nfish, nsharks=nsharks)
-    # Vytvoreni nove mapy
+    # Create new map
     grid.array = wator.creatures
     grid.energy = wator.energies
 
-    # Mapa muze byt jinak velka, tak musime zmenit velikost Gridu;
-    # (tento kod pouzivame i jinde, meli bychom si na to udelat funkci!)
+    # Change size of array
     size = logical_to_pixel(rows, cols)
     grid.setMinimumSize(*size)
     grid.setMaximumSize(*size)
     grid.resize(*size)
 
-    # Prekresleni celeho Gridu
+    # Rewrite of grid
     grid.update()
 
 
@@ -108,7 +131,7 @@ def save_dialog(window, grid):
     #if result == QtWidgets.QDialog.Rejected:
     #    return
 
-    filename, _filter = QtWidgets.QFileDialog.getSaveFileName(None, "Save File", "wator/gui/simulations/", "(*)")
+    filename, _filter = QtWidgets.QFileDialog.getSaveFileName(None, "Save File", grid.filepath, "(*)")
     #filename = dialog.findChild(QtWidgets.QLineEdit, 'filenameLine').text()
 
     if filename == "":
@@ -118,6 +141,9 @@ def save_dialog(window, grid):
     #   error = QtWidgets.QMessageBox.critical(None, "Error", "File already exist!")
     #   error.exec()
     #   return
+
+    count = len(filename.split('/')[-1])
+    grid.filepath = filename[:-count] 
 
     numpy.savetxt(filename, grid.array)
 
@@ -143,7 +169,7 @@ def open_dialog(window, grid):
     #if result == QtWidgets.QDialog.Rejected:
     #    return
 
-    filename, _filter = QtWidgets.QFileDialog.getOpenFileName(None, "Open file", 'wator/gui/simulations/', "(*)")
+    filename, _filter = QtWidgets.QFileDialog.getOpenFileName(None, "Open file", grid.filepath, "(*)")
     #filename = dialog.findChild(QtWidgets.QLineEdit, 'filenameLine').text()
 
     if filename == "":
@@ -173,15 +199,17 @@ def open_dialog(window, grid):
        return
 
 
-
     wator = WaTor(creatures=array)
     grid.array = wator.creatures
     grid.energy = wator.energies
 
-    size = logical_to_pixels(grid.array.shape[0], grid.array.shape[1])
+    size = logical_to_pixel(grid.array.shape[0], grid.array.shape[1])
     grid.setMinimumSize(*size)
     grid.setMaximumSize(*size)
     grid.resize(*size)
+
+    count = len(filename.split('/')[-1])
+    grid.filepath = filename[:-count]
 
     grid.update()
 
@@ -194,6 +222,6 @@ def print_about(window, grid):
     :param: ``grid`` Layout of window.
     :return: ``None`` 
     """
-    about = QtWidgets.QMessageBox.about(None, "About WaTor", "<b>WaTor simulation</b><br>Python module with GUI simulating WaTor sea world<br><br>2017<br>Author: Lenka Stejskalova<br><a href=\"https://github.com/stejsle1/wator\">GitHub stejsle1/wator</a><br>Contains <a href=\"https://pypi.python.org/pypi/PyQt5/5.9.1\">PyQt5</a> and graphics from <a href=\"opengameart.org\">OpenGameArt.org</a>")
+    about = QtWidgets.QMessageBox.about(None, "About WaTor", "<b>WaTor Simulations</b><br>Python module with GUI simulating WaTor sea world<br><br>2017<br>Author: Lenka Stejskalova<br><a href=\"https://github.com/stejsle1/wator\">GitHub stejsle1/wator</a><br>Contains <a href=\"https://pypi.python.org/pypi/PyQt5/5.9.1\">PyQt5</a> and graphics from <a href=\"opengameart.org\">OpenGameArt.org</a>")
     return
 

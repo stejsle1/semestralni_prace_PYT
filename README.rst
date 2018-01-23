@@ -1,7 +1,7 @@
 WaTor
 =====
 
-This is a application with graphical user interface (GUI). This project is about WaTor - WaTor is simulation of sea world with fishs and sharks (p.
+This is a application with graphical user interface (GUI). This project is about WaTor - WaTor is simulation of sea world with fish and sharks (predator/prey). This project follow up on project WaTor (``https://github.com/stejsle1/wator``).
 
 
 Install

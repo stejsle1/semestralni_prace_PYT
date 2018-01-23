@@ -3,7 +3,7 @@ import numpy
 import time
 import os.path
 from wator import WaTor
-from .windows import new_dialog, save_dialog, open_dialog, print_about
+from .windows import start_dialog, new_dialog, save_dialog, open_dialog, print_about
 from .simulations import next_chronon, simulation_loop, simulation_opti
 from .gridwidgetclass import GridWidget
 from .matplot import MyMplCanvas
@@ -38,22 +38,20 @@ def logical_to_pixels(row, column):
     """
     return column * CELL_SIZE, row * CELL_SIZE
 
-
 def main():
     """Main function.
 
        Run GUI app.
     """
-    app = QtWidgets.QApplication(['WaTor Simulations'])
+    app = QtWidgets.QApplication([])
 
     window = QtWidgets.QMainWindow()
-    window.setWindowTitle('WaTor Simulations')
 
     with open('wator/gui/mainwindow.ui') as f:
         uic.loadUi(f, window)
 
     # Wator instance = grid; - random creatures setting
-    wator = WaTor(shape=(15, 20), nfish=10, nsharks=10)
+    wator = WaTor(numpy.zeros((20, 20)), numpy.zeros((20, 20)))
 
 
     # Get scrollArea from Qt Designeru
@@ -69,7 +67,7 @@ def main():
     canvas = MyMplCanvas(window, width=5, height=1, dpi=75)
     graph_area.addWidget(canvas)
 
-
+    
     # Get palette from Qt Designeru
     palette = window.findChild(QtWidgets.QListWidget, 'palette')
 
@@ -121,6 +119,10 @@ def main():
     grid.initEnergy = init
     
     window.show()
+
+    # Open start dialog - "the crossroads"
+    start_dialog(window, grid)
+
 
     return app.exec()
 
