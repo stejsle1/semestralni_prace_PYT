@@ -66,4 +66,4 @@ In bottom part of right side there is list of icons. They are symbols of water, 
 Graph field
 -----------
 
-On upper part of main window
+On upper part of main window is rectangle with graph. This graph showing actual amount of fish and sharks and amount of added fish and sharks while optimalizing. Red color means fish part, blue color means shakrs part. Lines are actual amount of creatures, dots are amount of creatures added to simulation.
