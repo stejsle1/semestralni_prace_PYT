@@ -3,7 +3,7 @@
 TEST
 ====
 
-Documentation can test some **wator** function to see how they works. 
+Documentation can test some **wator** function to see how they works. To see how to run tests on own machine see :ref:`last capture<test-machine>`.
 
 .. testsetup::
 
@@ -83,17 +83,17 @@ Tick function of WaTor instance is running this way: ``wator.tick()``. Function 
    creatures2[0, 0] = 2
    wator = WaTor(creatures2)
    print(wator.creatures)
-   print('-------')
+   print('------')
    wator.tick()
    print(wator.creatures)
 
 .. testoutput::
 
-   [[ 2.]
-    [ 0.]]
-   ------- 
-   [[ 0.]
-    [ 3.]]    
+   [[2.]
+    [0.]]
+   ------ 
+   [[0.]
+    [3.]]    
     
 In first array fish lay in position [0, 0]. *Tick* function move it to only free position.                
   
@@ -162,7 +162,55 @@ WaTor functions for settings are *setAge_fish*, *setAge_shark*, *setEnergy_eat* 
 
 .. testoutput::
 
-   5
+   3
    15
-   
+
+*SetOpti* sets indicator how many creatures will be added to array of creatures:
+
+.. testcode::
+
+   print(wator.opti)
+   wator.setOpti(80, 75)
+   print(wator.opti)
+
+.. testoutput::
+
+   0
+   61.0
+
+Optimalize
+----------
+
+Function *optimalize* makes equilibrium between species. So if one of species die off, function add some creatures to make equilibrium. Function works with *opti* atribut. 
+
+.. testcode::
+
+   creatures = numpy.zeros((20, 20))
+   creatures[0, :] = 1 # 20 fish
+   creatures[9, :] = -1 
+   creatures[12, :] = -1
+   creatures[15, :] = -1 # 60 sharks
+   wator = WaTor(creatures)
+   wator.setOpti(wator.count_fish()+wator.count_sharks(), 42)
+   lim_f, lim_s = wator.optimalize()
+   print(str(lim_f) + " fish and " + str(lim_s) + " sharks")
+
+.. testoutput::
+
+   14 fish and 0 sharks 
+
+
+.. _test-machine:
+
+Tests on machine
+----------------
+
+Tests for *wator* are placed in **wator_tests** directory. To run tests type:
+
+.. code:: Python
+
+   python -m pytest wator_tests/tests/*
+  
+This command run tests for testing *WaTor* module, not GUI of *wator*.
+
    
