@@ -151,5 +151,18 @@ WaTor functions for settings are *setAge_fish*, *setAge_shark*, *setEnergy_eat* 
 
    10
    11
+
+*SetEnergy_eat* sets an amount of energy shark gains after eating fish:
+
+.. testcode::
+
+   print(wator.energy_eat)
+   wator.setEnergy_eat(15)
+   print(wator.energy_eat)
+
+.. testoutput::
+
+   5
+   15
    
    
