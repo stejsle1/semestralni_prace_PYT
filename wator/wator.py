@@ -220,3 +220,96 @@ class WaTor():
    def count_sharks(self):
       boolarr = self.creatures < 0
       return numpy.sum(boolarr, dtype='int16')
+      
+   def setAge_fish(self, age):
+      """
+      Set age of fish to breed.
+      
+      :param: ``age`` Age of fish.
+      :rets: ``None``
+      """
+      
+      self.age_fish = age
+   
+   def setAge_shark(self, age): 
+      """
+      Set age of shark to breed.
+      
+      :param: ``age`` Age of shark.
+      :rets: ``None``
+      """
+      
+      self.age_shark = age
+
+   def setEnergy_eat(self, eat): 
+      """
+      Set amount of energy which shark gains after eating fish.
+      
+      :param: ``eat`` Amount of energy.
+      :rets: ``None``
+      """
+      
+      self.eat = eat
+
+   def setOpti(self, sum, opti_perc):
+      """
+      Set amount of creatures to add for optimalize simulation.
+      
+      :param: ``sum`` Amount of creatures in array.
+      :param: ``opti_perc`` Percentage of creatures to add.
+      :rets: ``None``
+      """
+      
+      self.opti = numpy.floor(sum*opti_perc/100) + 1
+
+
+   def optimalize(self):
+      """
+      Makes equilibrium between species by adding creatures to array if they start to die off.
+      
+      :rets: ``limit_fish, limit_shark`` Amount of added creatures.
+      """
+   
+      limit = 0
+
+      if self.count_fish() <= self.opti:
+         # Add fish
+         size0 = self.creatures.shape[0]
+         size1 = self.creatures.shape[1]
+         limit = int(self.opti-self.count_fish())
+         ran = numpy.random.random_integers(0, size0*size1-1, limit)
+         ran_fish = numpy.random.randint(low=1, high=self.age_fish+1, size=limit)
+         ok = 0
+
+         while ok < limit:
+            if self.creatures[int(ran[ok]/size1), ran[ok]%size1] != 0:
+               ran[ok] += 1
+               ran[ok] %= size0*size1
+               continue
+            self.creatures[int(ran[ok]/size1), ran[ok]%size1] = ran_fish[ok]
+            ok += 1
+
+      limit_fish = limit 
+      limit = 0  
+
+      if self.count_sharks() <= self.opti:
+         # Add shark
+         size0 = self.creatures.shape[0]
+         size1 = self.creatures.shape[1]
+         limit = int(self.opti-self.count_sharks())
+         ran = numpy.random.random_integers(0, size0*size1-1, limit)
+         ran_shark = numpy.random.randint(low=1, high=self.age_shark+1, size=limit)
+         ok = 0
+
+         while ok < limit:
+            if self.creatures[int(ran[ok]/size1), ran[ok]%size1] != 0:
+               ran[ok] += 1
+               ran[ok] %= size0*size1
+               continue
+            self.creatures[int(ran[ok]/size1), ran[ok]%size1] = -1*ran_shark[ok]
+            ok += 1
+            
+      return limit_fish, limit     
+
+
+
