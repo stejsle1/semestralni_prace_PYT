@@ -50,7 +50,6 @@ class MyMplCanvas(FigureCanvas):
         self.axes.set_autoscaley_on(True)
         self.axes.set_xlim(0, 100)
 
-        self.counter = 0
         self.axes.set_xlabel('Time')
         self.axes.set_ylabel('Count')
 
@@ -62,6 +61,7 @@ class MyMplCanvas(FigureCanvas):
 
         """
         self.axes.clear()
+
         with open('wator/gui/simulations/logmatplot.txt', 'r+') as f:
             lines = f.readlines()
         x = [line.split()[0] for line in lines]
@@ -69,19 +69,24 @@ class MyMplCanvas(FigureCanvas):
         a = [line.split()[2] for line in lines]
         b = [line.split()[3] for line in lines]
 
-        if self.counter < 30: 
-            self.counter += 1
-        self.axes.plot(x, 'r--')
-        #self.lines.set_xdata(x)
-        #self.lines.set_ydata([])
-        #self.axes.plot(range(0, self.counter), y, 'b--')
-        #self.axes.plot(a, 'ro')
-        #self.axes.plot(b, 'bo')
-        print(str(x))
-        self.axes.relim()
-        self.axes.set_autoscaley_on(True)
+        # Because list are full of strings, not ints
+        x = list(map(int, x))
+        y = list(map(int, y))
+        a = list(map(int, a))
+        b = list(map(int, b))
 
-        self.axes.set_xticks([])
+        self.axes.plot(x, 'r--', label="Actual #fish")
+        self.axes.plot(y, 'b--', label="Actual #sharks")
+        self.axes.plot(a, 'ro', label="Added by Opti #fish")
+        self.axes.plot(b, 'bo', label="Added by Opti #sharks")
+
+        self.axes.legend()
+        self.axes.relim(visible_only=True)
+        self.axes.autoscale()
+        self.draw()
+
+
+        self.axes.set_xticks([0, 5, 10, 15, 20, 25, 30])
         self.axes.spines['top'].set_visible(False)
         self.axes.spines['right'].set_visible(False)
         self.axes.spines['bottom'].set_visible(False)
@@ -89,5 +94,6 @@ class MyMplCanvas(FigureCanvas):
 
         self.axes.set_xlabel('Time')
         self.axes.set_ylabel('Count')
+
         self.draw()
         
