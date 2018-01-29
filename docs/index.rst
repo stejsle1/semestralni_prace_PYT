@@ -13,6 +13,7 @@ Welcome to wator's documentation!
    intro
    src/install
    src/config
-   src/usage
+   src/usage   
+   src/api
    src/gui
    src/test

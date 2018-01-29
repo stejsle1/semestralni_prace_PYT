@@ -51,7 +51,8 @@ class WaTor():
       self.creatures = creatures
       self.age_fish = age_fish
       self.age_shark = age_shark
-      self.eat = energy_eat           
+      self.energy_eat = energy_eat  
+      self.opti = 0         
          
    def tick(self):
       energies = self.energies
@@ -140,19 +141,19 @@ class WaTor():
                   ran = random.randint(1, 4) 
                   if ran == 1 and creatures2[(i+1)%size0,j] > 0:
                      creatures2[(i+1)%size0,j] = value - 1
-                     energies2[(i+1)%size0,j] = energies[i,j] + self.eat
+                     energies2[(i+1)%size0,j] = energies[i,j] + self.energy_eat
                      break
                   if ran == 2 and creatures2[(i-1)%size0,j] > 0:
                      creatures2[(i-1)%size0,j] = value - 1                                                                               
-                     energies2[(i-1)%size0,j] = energies[i,j] + self.eat
+                     energies2[(i-1)%size0,j] = energies[i,j] + self.energy_eat
                      break
                   if ran == 3 and creatures2[i,(j+1)%size1] > 0:
                      creatures2[i,(j+1)%size1] = value - 1
-                     energies2[i,(j+1)%size1] = energies[i,j] + self.eat
+                     energies2[i,(j+1)%size1] = energies[i,j] + self.energy_eat
                      break
                   if ran == 4 and creatures2[i,(j-1)%size1] > 0:
                      creatures2[i,(j-1)%size1] = value - 1
-                     energies2[i,(j-1)%size1] = energies[i,j] + self.eat
+                     energies2[i,(j-1)%size1] = energies[i,j] + self.energy_eat
                      break
             else:      # neni tam ryba
                ways = 0   
