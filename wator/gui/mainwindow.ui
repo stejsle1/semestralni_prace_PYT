@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>WaTor Simulations</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -29,6 +29,9 @@
      <widget class="QSpinBox" name="energy_initialBox">
       <property name="minimum">
        <number>3</number>
+      </property>
+      <property name="value">
+       <number>5</number>
       </property>
      </widget>
     </item>
@@ -60,6 +63,9 @@
      <widget class="QSpinBox" name="age_sharkBox">
       <property name="minimum">
        <number>2</number>
+      </property>
+      <property name="value">
+       <number>7</number>
       </property>
      </widget>
     </item>
@@ -104,6 +110,9 @@
       <property name="minimum">
        <number>1</number>
       </property>
+      <property name="value">
+       <number>50</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -113,6 +122,9 @@
      <widget class="QSpinBox" name="age_fishBox">
       <property name="minimum">
        <number>2</number>
+      </property>
+      <property name="value">
+       <number>5</number>
       </property>
      </widget>
     </item>
@@ -139,15 +151,15 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>751</width>
-         <height>585</height>
+         <width>749</width>
+         <height>602</height>
         </rect>
        </property>
       </widget>
      </widget>
     </item>
     <item row="3" column="0" rowspan="6">
-     <widget class="QWidget" name="plotArea" native="true"/>
+     <layout class="QHBoxLayout" name="plotLayout"/>
     </item>
    </layout>
   </widget>
@@ -260,5 +272,22 @@
   <tabstop>palette</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionQuit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>516</x>
+     <y>418</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
