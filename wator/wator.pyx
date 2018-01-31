@@ -73,7 +73,7 @@ class WaTor():
             raise ValueError("Mnoho parametru")   
       else:
          if energy_initial == 0:
-            energy_initial = 3
+            energy_initial = 5
          energies = numpy.zeros((creatures.shape[0], creatures.shape[1]))  
          for i in range(0, creatures.shape[0]):
             for j in range(0, creatures.shape[1]):
@@ -84,8 +84,9 @@ class WaTor():
       self.creatures = creatures
       self.age_fish = age_fish
       self.age_shark = age_shark
-      self.eat = energy_eat 
-      self.initEnergy = energy_initial           
+      self.energy_eat = energy_eat 
+      self.initEnergy = energy_initial 
+      self.opti = 0          
          
    
    def tick(self):
@@ -197,19 +198,19 @@ class WaTor():
                      a = 0
                   if ran[a] == 1 and creatures2[(i+1)%size0,j] > 0:
                      creatures2[(i+1)%size0,j] = value - 1
-                     energies2[(i+1)%size0,j] = energies[i,j] + self.eat
+                     energies2[(i+1)%size0,j] = energies[i,j] + self.energy_eat
                      break
                   if ran[a] == 2 and creatures2[(i-1)%size0,j] > 0:
                      creatures2[(i-1)%size0,j] = value - 1                                                                               
-                     energies2[(i-1)%size0,j] = energies[i,j] + self.eat
+                     energies2[(i-1)%size0,j] = energies[i,j] + self.energy_eat
                      break
                   if ran[a] == 3 and creatures2[i,(j+1)%size1] > 0:
                      creatures2[i,(j+1)%size1] = value - 1
-                     energies2[i,(j+1)%size1] = energies[i,j] + self.eat
+                     energies2[i,(j+1)%size1] = energies[i,j] + self.energy_eat
                      break
                   if ran[a] == 4 and creatures2[i,(j-1)%size1] > 0:
                      creatures2[i,(j-1)%size1] = value - 1
-                     energies2[i,(j-1)%size1] = energies[i,j] + self.eat
+                     energies2[i,(j-1)%size1] = energies[i,j] + self.energy_eat
                      break
             else:      # neni tam ryba
                ways = 0   
@@ -286,6 +287,7 @@ class WaTor():
       boolarr = self.creatures > 0
       return numpy.sum(boolarr, dtype='int64')
    
+
    def count_sharks(self):  
       """
       Return actual amount of sharks in array.
@@ -297,6 +299,7 @@ class WaTor():
       boolarr = self.creatures < 0
       return numpy.sum(boolarr, dtype='int64')
 
+
    def setAge_fish(self, age):
       """
       Set age of fish to breed.
@@ -307,6 +310,7 @@ class WaTor():
       
       self.age_fish = age
    
+
    def setAge_shark(self, age): 
       """
       Set age of shark to breed.
@@ -317,6 +321,7 @@ class WaTor():
       
       self.age_shark = age
 
+
    def setEnergy_eat(self, eat): 
       """
       Set amount of energy which shark gains after eating fish.
@@ -325,7 +330,8 @@ class WaTor():
       :rets: ``None``
       """
       
-      self.eat = eat
+      self.energy_eat = eat
+
 
    def setOpti(self, sum, opti_perc):
       """
@@ -342,6 +348,8 @@ class WaTor():
    def optimalize(self):
       """
       Makes equilibrium between species by adding creatures to array if they start to die off.
+
+      Add creatures to array.
       
       :rets: ``limit_fish, limit_shark`` Amount of added creatures.
       """
@@ -358,6 +366,8 @@ class WaTor():
          ok = 0
 
          while ok < limit:
+            if self.count_fish()+self.count_sharks() >= size0*size1:
+               return ok, 0
             if self.creatures[int(ran[ok]/size1), ran[ok]%size1] != 0:
                ran[ok] += 1
                ran[ok] %= size0*size1
@@ -378,11 +388,14 @@ class WaTor():
          ok = 0
 
          while ok < limit:
+            if self.count_fish()+self.count_sharks() >= size0*size1:
+               return limit_fish, ok
             if self.creatures[int(ran[ok]/size1), ran[ok]%size1] != 0:
                ran[ok] += 1
                ran[ok] %= size0*size1
                continue
             self.creatures[int(ran[ok]/size1), ran[ok]%size1] = -1*ran_shark[ok]
+            self.energies[int(ran[ok]/size1), ran[ok]%size1] = self.initEnergy
             ok += 1
             
       return limit_fish, limit     

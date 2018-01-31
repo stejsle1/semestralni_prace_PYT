@@ -222,6 +222,6 @@ def print_about(window, grid):
     :param: ``grid`` Layout of window.
     :return: ``None`` 
     """
-    about = QtWidgets.QMessageBox.about(None, "About WaTor", "<b>WaTor Simulations</b><br>Python module with GUI simulating WaTor sea world<br><br>2017<br>Author: Lenka Stejskalova<br><a href=\"https://github.com/stejsle1/wator\">GitHub stejsle1/wator</a><br>Contains <a href=\"https://pypi.python.org/pypi/PyQt5/5.9.1\">PyQt5</a> and graphics from <a href=\"opengameart.org\">OpenGameArt.org</a>")
+    about = QtWidgets.QMessageBox.about(None, "About WaTor", "<b>WaTor Simulations</b><br>Python module with GUI simulating WaTor sea world<br><br>2017<br>Author: Lenka Stejskalova<br><a href=\"https://github.com/stejsle1/semestralni_prace_PYT\">GitHub stejsle1/semestralni_prace_PYT</a> and <a href=\"https://github.com/stejsle1/wator\">GitHub stejsle1/wator</a><br>Contains <a href=\"https://pypi.python.org/pypi/PyQt5/5.9.1\">PyQt5</a> and graphics from <a href=\"opengameart.org\">OpenGameArt.org</a>")
     return
 
